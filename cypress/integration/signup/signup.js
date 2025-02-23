@@ -1,28 +1,114 @@
-/// <reference types="cypress" />
+/// <reference types="Cypress" />​
 
-import { Given, When, Then } from "@badeball/cypress-cucumber-preprocessor";
+import { Given, When, Then } from '@badeball/cypress-cucumber-preprocessor';
 
-Given('the user visits the DemoBlaze website', () => {
-    cy.visit('https://www.demoblaze.com/');
-    cy.viewport(1800,1000)
-  });
+Given('I open the Demoblaze homepage', () => {
 
-  When('the user clicks on the "Sign up" button', () => {
-    cy.get('#signin2').click()
+  cy.visit('https://www.demoblaze.com');  // Visit the Demoblaze homepage
+
+});
+When('I click on the "Sign up" button', () => {
+   cy.get('#signin2').click();
+   cy.wait(2000)                    
+
+});
+
+
+
+Then('I should see the sign-up tag', () => {
+   cy.get('h5').contains('Sign up').should('exist')
+   .should('be.visible');
+
+});
+
+When('I enter a valid username and password', () => {
+
+let username = "Tommalyn"
+
+let password = "schoolbag@123"
+
+//cy.get('#sign-username').type(this.data.username)
+
+//cy.get('#sign-password').type(this.data.password)
+
+cy.get('#sign-username').type("username"+ Cypress._.random(0, 1e6))
+
+cy.get('#sign-password').type(password)
+
+cy.wait(2000)
+
+});
+
+
+
+  
+
+  Then('I submit the sign-up form',() => {
+
+    cy.get('button').contains('Sign up').click({ force: true });
+
     cy.wait(2000)
-});
 
-Then("Verity that the sign up tag is displayed", function () {
-  cy.get('#signInModalLabel')
-    .should('be.visible');
-});
+    
 
-When('the user enters valid {string} and {string}', (username, password) => {
-  cy.get('#sign-username').type('Tommalyn');
-  cy.get('#sign-password').type('schoolbag@123');
-});
+    });
 
-When('the user submits the sign-up form', () => {
-  cy.contains('Sign up').click();
 
-});
+
+    When('I enter an existing valid username and password', () => {
+
+      let username = "Tommalyn"
+
+      let password = "schoolbag@123"
+
+      //cy.get('#sign-username').type(this.data.username)
+
+      //cy.get('#sign-password').type(this.data.password)
+
+      cy.get('#sign-username').type(username)
+
+      cy.get('#sign-password').type(password)
+
+      cy.wait(2000)
+
+    });
+
+
+
+    Then("I should see an error message 'This user already exist'",() => {
+
+            cy.on('window:alert',(txt)=>{
+
+                expect(txt).to.contains('This user already exist.');
+
+            })
+
+        });
+
+
+
+        When('I enter a valid username', () => {
+
+          let username = "Tommalyn"
+
+          //cy.get('#sign-username').type(this.data.username)
+
+          //cy.get('#sign-password').type(this.data.password)
+
+          cy.get('#sign-username').type(username)
+
+          cy.wait(2000)
+
+        });
+
+
+
+        Then("I should see an error message {string}.", function (string) {
+
+          cy.on('window:alert',(txt)=>{
+
+            expect(txt).to.contains('Please fill out Username and Password.');
+
+          })
+
+      });
