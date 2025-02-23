@@ -21,6 +21,7 @@ async function setupNodeEvents(on, config) {
 }
 
 module.exports = defineConfig({
+  projectId: "e2iigv",
   e2e: {
     baseUrl: "https://duckduckgo.com",
     specPattern: "cypress/integration/**/*.feature",
